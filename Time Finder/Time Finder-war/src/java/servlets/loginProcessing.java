@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Flori
+ * @author Florian Widder
  */
 public class loginProcessing extends HttpServlet {
 
