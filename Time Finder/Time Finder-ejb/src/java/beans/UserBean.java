@@ -74,9 +74,9 @@ public class UserBean {
     private void createUserTable() throws SQLException {
         String sql = "CREATE TABLE USERS(USERID INT NOT NULL PRIMARY KEY "
                 + "GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),"
-                + "USERNAME VARCHAR(255) NOT NULL, PASSWORD VARCHAR(255) "
-                + "NOT NULL,EMAIL VARCHAR(255) "
-                + "NOT NULL, SESSION VARCHAR(255), UNIQUE(USERNAME))";
+                + "USERNAME VARCHAR(255) UNIQUE NOT NULL, PASSWORD VARCHAR(255) "
+                + "NOT NULL,EMAIL VARCHAR(255) UNIQUE "
+                + "NOT NULL, SESSION VARCHAR(255))";
         PreparedStatement statement = dbConnection.prepareStatement(sql);
         statement.execute();
     }
