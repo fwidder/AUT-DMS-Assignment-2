@@ -5,12 +5,17 @@
  */
 package servlets;
 
+import beans.UserBean;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -26,22 +31,27 @@ public class loginProcessing extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * @throws java.sql.SQLException
+     * @throws java.security.NoSuchAlgorithmException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException, NoSuchAlgorithmException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet loginProcessing</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet loginProcessing at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        UserBean user = (UserBean) request.getSession().getAttribute("user");
+        user.login(request.getParameter("username"), request.getParameter("password"));
+        String redirectURL = "index.jsp";
+
+        HttpSession session = request.getSession();
+        if (!user.isLoggedIn()) {
+            session.setAttribute("loginerror", true);
+            redirectURL = "login.jsp";
+        } else {
+            session.setAttribute("loginerror", false);
         }
+        session.setAttribute("logout", false);
+        session.setAttribute("register", false);
+        session.setAttribute("passerror", false);
+        response.sendRedirect(redirectURL);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -56,7 +66,11 @@ public class loginProcessing extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException | NoSuchAlgorithmException ex) {
+            Logger.getLogger(loginProcessing.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -70,7 +84,11 @@ public class loginProcessing extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException | NoSuchAlgorithmException ex) {
+            Logger.getLogger(loginProcessing.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

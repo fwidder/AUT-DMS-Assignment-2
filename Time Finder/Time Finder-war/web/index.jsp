@@ -22,7 +22,16 @@
     <body>
         <jsp:useBean id= "user" scope= "session"   
                      class= "beans.UserBean" >  
-        </jsp:useBean>
+        </jsp:useBean>        
+        <% if (user.getSessionID() == null || !user.getSessionID().equals(session.getId())) {
+                user.setSessionID(session.getId());
+            }%>            
+        <%
+            String logout = "none";
+            if (session.getAttribute("logout") != null && session.getAttribute("logout").equals(true)) {
+                logout = "block";
+            }
+        %>
         <nav class="navbar navbar-inverse">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -32,9 +41,13 @@
                     <li class="active"><a href="index.jsp">Home</a></li>
                     <li style="display:${user.isLoggedIn() ? 'none' : 'block'}"><a href="login.jsp">Login</a></li>
                     <li style="display:${user.isLoggedIn() ? 'none' : 'block'}"><a href="register.jsp">Register</a></li>
+                    <li style="display:${!user.isLoggedIn() ? 'none' : 'block'}"><a>User: <%= user.getUsername()%></a></li>
                     <li style="display:${!user.isLoggedIn() ? 'none' : 'block'}"><a href="logoutProcessing">Logout</a></li>
                 </ul>
             </div>
         </nav>
+        <div class="alert alert-info" role="alert" style=" display:<%=logout%>">
+            Successfully logged out!
+        </div>
     </body>
 </html>
