@@ -47,7 +47,7 @@
                         <a class="nav-link" href="register.jsp">Register</a>
                     </li>
                     <li class="nav-item" style="display:${!user.isLoggedIn() ? 'none' : 'block'}">
-                        <a class="nav-link" User: <%= user.getUsername()%></a>
+                        <a class="nav-link"> User: <%= user.getUser().getName()%></a>
                     </li>
                     <li class="nav-item" style="display:${!user.isLoggedIn() ? 'none' : 'block'}">
                         <a class="nav-link" href="logoutProcessing">Logout</a>
