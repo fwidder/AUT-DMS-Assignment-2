@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import model.User;
+import util.Hash;
 import util.Settings;
 
 /**
@@ -29,20 +30,6 @@ public class UserBean {
 
     private final Connection dbConnection;
     private String SessionID;
-
-    private String hashHex(String toHash) throws NoSuchAlgorithmException {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] encodedhash = digest.digest(toHash.getBytes(StandardCharsets.UTF_8));
-        StringBuilder hexString = new StringBuilder();
-        for (int i = 0; i < encodedhash.length; i++) {
-            String hex = Integer.toHexString(0xff & encodedhash[i]);
-            if (hex.length() == 1) {
-                hexString.append('0');
-            }
-            hexString.append(hex);
-        }
-        return hexString.toString();
-    }
 
     public UserBean() throws SQLException {
         dbConnection = DriverManager.getConnection(Settings.dbUrl);
@@ -112,7 +99,7 @@ public class UserBean {
         PreparedStatement statement = dbConnection.prepareStatement(sqlGetPassword);
         statement.setString(1, username);
         ResultSet result = statement.executeQuery();
-        if (result.next() && result.getString(1).equals(hashHex(password))) {
+        if (result.next() && result.getString(1).equals(Hash.hashHex(password))) {
             statement = dbConnection.prepareStatement(sqlSetSession);
             statement.setString(1, getSessionID());
             statement.setString(2, username);
@@ -146,7 +133,7 @@ public class UserBean {
                 + "            ?) ";
         PreparedStatement statement = dbConnection.prepareStatement(sqlSetSession);
         statement.setString(1, username);
-        statement.setString(2, hashHex(password));
+        statement.setString(2, Hash.hashHex(password));
         statement.setString(3, email);
         statement.executeUpdate();
     }
