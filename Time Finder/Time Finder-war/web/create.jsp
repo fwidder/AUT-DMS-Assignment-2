@@ -9,32 +9,34 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
+        <link rel ="stylesheet" href="assets/css/create.css">
         <jsp:include page="navbar.jsp"></jsp:include>
     </head>
     <body>
-      <h1>Enter Event Details</h1>
-      <form action="register" method="post">
-        <p><input name="eventname">
-        <p><input name="description">
-        <div class="container">
-            <div class="row">
-                <div class='col-sm-6'>
-                    <div class="form-group">
-                        <div class='input-group date' id='datetimepicker1'>
-                            <input type='text' class="form-control" />
-                            <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <script type="text/javascript">
-                $(function () {
-                $('#datetimepicker1').datetimepicker();
-                 ]});
-            </script>
-            </div>
-        </div>
-      </form>
+        <h1>Enter Event Details</h1>
+        <form action="registerEvent" method="post">
+            <p><input name="eventName">
+            <p><input name="eventDescription">
+            <input type="date" name="start" data-date1="" data-date-format="DD MMMM YYYY" value="2018-04-15">
+            <input type="date" name="end" data-date2="" data-date-format="DD MMMM YYYY" value="2015-04-15">
+            <button value="registerEvent" type="submit" class="btn btn-default">Login</button>
+        </form>
     </body>
+    <script>
+        $("start").on("change", function () {
+            this.setAttribute(
+                    "data-date1",
+                    moment(this.value, "YYYY-MM-DD")
+                    .format(this.getAttribute("data-date-format"))
+                    )
+        }).trigger("change")
+                $("end").on("change", function () {
+            this.setAttribute(
+                    "data-date2",
+                    moment(this.value, "YYYY-MM-DD")
+                    .format(this.getAttribute("data-date-format"))
+                    )
+        }).trigger("change")
+    </script>
 </html>
