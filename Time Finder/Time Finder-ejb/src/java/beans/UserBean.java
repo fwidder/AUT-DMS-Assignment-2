@@ -82,7 +82,7 @@ public class UserBean {
         String sql = "SELECT USERID,\n"
                 + "       USERNAME,\n"
                 + "       EMAIL\n"
-                + "FROM   USERES\n"
+                + "FROM   USERS\n"
                 + "WHERE  SESSION = ? ";
         PreparedStatement statement = dbConnection.prepareStatement(sql);
         statement.setString(1, getSessionID());
