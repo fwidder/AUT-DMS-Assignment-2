@@ -16,6 +16,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import model.User;
 import util.Settings;
 
 /**
@@ -52,18 +53,36 @@ public class UserBean {
         }
     }
 
+    private void createUserTable() throws SQLException {
+        String sql = "CREATE TABLE USERS\n"
+                + "  (\n"
+                + "     USERID   INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),\n"
+                + "     USERNAME VARCHAR(255) UNIQUE NOT NULL,\n"
+                + "     PASSWORD VARCHAR(255) NOT NULL,\n"
+                + "     EMAIL    VARCHAR(255) UNIQUE NOT NULL,\n"
+                + "     SESSION  VARCHAR(255)\n"
+                + "  ) ";
+        PreparedStatement statement = dbConnection.prepareStatement(sql);
+        statement.execute();
+    }
+
     public boolean isLoggedIn() throws SQLException {
-        String sql = "SELECT * FROM USERS WHERE SESSION = ?";
+        String sql = "SELECT *\n"
+                + "FROM   USERS\n"
+                + "WHERE  SESSION = ? ";
         PreparedStatement statement = dbConnection.prepareStatement(sql);
         statement.setString(1, getSessionID());
         return (statement.executeQuery()).next();
     }
 
+    @Deprecated
     public String getUsername() throws SQLException {
         if (!isLoggedIn()) {
             return null;
         }
-        String sql = "SELECT USERNAME FROM USERS WHERE SESSION = ?";
+        String sql = "SELECT USERNAME\n"
+                + "FROM   USERS\n"
+                + "WHERE  SESSION = ?  ";
         PreparedStatement statement = dbConnection.prepareStatement(sql);
         statement.setString(1, getSessionID());
         ResultSet result;
@@ -71,14 +90,38 @@ public class UserBean {
         return result.getString(1);
     }
 
-    private void createUserTable() throws SQLException {
-        String sql = "CREATE TABLE USERS(USERID INT NOT NULL PRIMARY KEY "
-                + "GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),"
-                + "USERNAME VARCHAR(255) UNIQUE NOT NULL, PASSWORD VARCHAR(255) "
-                + "NOT NULL,EMAIL VARCHAR(255) UNIQUE "
-                + "NOT NULL, SESSION VARCHAR(255))";
+    @Deprecated
+    public int getUserID() throws SQLException {
+        if (!isLoggedIn()) {
+            return -1;
+        }
+        String sql = "SELECT USERID\n"
+                + "FROM   USERS\n"
+                + "WHERE  SESSION = ?  ";
         PreparedStatement statement = dbConnection.prepareStatement(sql);
-        statement.execute();
+        statement.setString(1, getSessionID());
+        ResultSet result;
+        (result = (statement.executeQuery())).next();
+        return result.getInt(1);
+    }
+
+    public User getUser() throws SQLException {
+        if (!isLoggedIn()) {
+            return null;
+        }
+        String sql = "SELECT USERID,\n"
+                + "       USERNAME,\n"
+                + "       EMAIL\n"
+                + "FROM   USERES\n"
+                + "WHERE  SESSION = ? ";
+        PreparedStatement statement = dbConnection.prepareStatement(sql);
+        statement.setString(1, getSessionID());
+        ResultSet result = statement.executeQuery();
+        if (!result.next()) {
+            return null;
+        }
+        User user = new User(result.getInt(1), result.getString(2), result.getString(3));
+        return user;
     }
 
     public String getSessionID() {
@@ -90,8 +133,12 @@ public class UserBean {
     }
 
     public void login(String username, String password) throws SQLException, NoSuchAlgorithmException {
-        String sqlGetPassword = "SELECT PASSWORD FROM USERS WHERE USERNAME = ?";
-        String sqlSetSession = "UPDATE USERS SET SESSION = ? WHERE USERNAME = ?";
+        String sqlGetPassword = "SELECT PASSWORD\n"
+                + "FROM   USERS\n"
+                + "WHERE  USERNAME = ?  ";
+        String sqlSetSession = "UPDATE USERS\n"
+                + "SET    SESSION = ?\n"
+                + "WHERE  USERNAME = ? ";
         PreparedStatement statement = dbConnection.prepareStatement(sqlGetPassword);
         statement.setString(1, username);
         ResultSet result = statement.executeQuery();
@@ -107,7 +154,9 @@ public class UserBean {
         if (!isLoggedIn()) {
             return;
         }
-        String sqlSetSession = "UPDATE USERS SET SESSION = ? WHERE SESSION = ?";
+        String sqlSetSession = "UPDATE USERS\n"
+                + "SET    SESSION = ?\n"
+                + "WHERE  SESSION = ?  ";
         PreparedStatement statement = dbConnection.prepareStatement(sqlSetSession);
         statement.setNull(1, java.sql.Types.VARCHAR);
         statement.setString(2, getSessionID());
@@ -118,7 +167,13 @@ public class UserBean {
         if (isLoggedIn()) {
             return;
         }
-        String sqlSetSession = "INSERT INTO USERS(USERNAME, PASSWORD, EMAIL) VALUES(?, ?, ?)";
+        String sqlSetSession = "INSERT INTO USERS\n"
+                + "            (USERNAME,\n"
+                + "             PASSWORD,\n"
+                + "             EMAIL)\n"
+                + "VALUES     (?,\n"
+                + "            ?,\n"
+                + "            ?) ";
         PreparedStatement statement = dbConnection.prepareStatement(sqlSetSession);
         statement.setString(1, username);
         statement.setString(2, hashHex(password));
