@@ -8,7 +8,6 @@ package servlets;
 import beans.EventBean;
 import beans.UserBean;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -43,7 +42,7 @@ public class createEventProcessing extends HttpServlet {
             throws ServletException, IOException, SQLException, NoSuchAlgorithmException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
         UserBean user = (UserBean) request.getSession().getAttribute("user");
-        EventBean event = (EventBean) request.getSession().getAttribute("user");
+        EventBean event = (EventBean) request.getSession().getAttribute("event");
         String redirectURL = "available.jsp";
         HttpSession session = request.getSession();
         event.createEvent(user.getUser().getUserID(), request.getParameter("eventName"),

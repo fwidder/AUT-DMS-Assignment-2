@@ -16,8 +16,8 @@
         <link rel="stylesheet" href="assets/css/landing.css">
     </head>
     <body>
-        <jsp:useBean id= "user" scope= "session"   class= "beans.UserBean" >  
-        </jsp:useBean>        
+        <jsp:useBean id= "user" scope= "session"   class= "beans.UserBean" ></jsp:useBean>     
+        <jsp:useBean id= "event" scope= "session" class= "beans.EventBean"></jsp:useBean>   
         <% if (user.getSessionID() == null || !user.getSessionID().equals(session.getId())) {
                 user.setSessionID(session.getId());
             }%>            
@@ -27,7 +27,7 @@
                 logout = "block";
             }
         %>
-        
+
 
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light">

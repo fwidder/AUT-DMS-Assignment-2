@@ -15,11 +15,11 @@
     </head>
     <body>
         <h1>Enter Event Details</h1>
-        <form action="registerEvent" method="post">
+        <form action="createEventProcessing" method="post">
             <p><input name="eventName">
             <p><input name="eventDescription">
-            <input type="date" name="start" data-date1="" data-date-format="DD MMMM YYYY" value="2018-04-15">
-            <input type="date" name="end" data-date2="" data-date-format="DD MMMM YYYY" value="2015-04-15">
+            <input type="date" name="eventStart" data-date1="" data-date-format="DD MMMM YYYY" value="2018-04-15">
+            <input type="date" name="eventEnd" data-date2="" data-date-format="DD MMMM YYYY" value="2015-04-15">
             <button value="registerEvent" type="submit" class="btn btn-default">Login</button>
         </form>
     </body>
