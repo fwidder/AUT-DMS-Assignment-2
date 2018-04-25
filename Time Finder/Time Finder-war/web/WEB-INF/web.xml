@@ -12,6 +12,10 @@
         <servlet-name>registerProcessing</servlet-name>
         <servlet-class>servlets.registerProcessing</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>testEventBean</servlet-name>
+        <servlet-class>tests.testEventBean</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>logoutProcessing</servlet-name>
         <url-pattern>/logoutProcessing</url-pattern>
@@ -23,6 +27,10 @@
     <servlet-mapping>
         <servlet-name>registerProcessing</servlet-name>
         <url-pattern>/registerProcessing</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>testEventBean</servlet-name>
+        <url-pattern>/testEventBean</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
