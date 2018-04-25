@@ -13,9 +13,7 @@
 
     </head>
     <body>
-        <jsp:useBean id= "user" scope= "session"   
-                     class= "beans.UserBean" >  
-        </jsp:useBean>       
+        <jsp:useBean id= "user" scope= "session" class= "beans.UserBean" ></jsp:useBean>       
         <% if (user.getSessionID() == null || !user.getSessionID().equals(session.getId())) {
                 user.setSessionID(session.getId());
             }%>
