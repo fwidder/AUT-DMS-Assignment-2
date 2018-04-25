@@ -1,0 +1,14 @@
+
+.center{
+    text-align: center;
+}
+
+.centerdiv {
+    margin: auto;
+    width: 50%;
+    
+    padding: 10px;
+}
+.bordered{
+    border: 3px solid green;
+}
