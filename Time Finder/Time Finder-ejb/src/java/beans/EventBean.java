@@ -202,4 +202,31 @@ public class EventBean {
         }
         return e;
     }
+    
+    public Event getEventByName(String eventName) throws SQLException {
+        String sql = "SELECT E.EVNTID,\n"
+                + "       E.NAME,\n"
+                + "       E.DESCRIPTION,\n"
+                + "       E.START,\n"
+                + "       E.ENDING,\n"
+                + "       E.BEST,\n"
+                + "       U.USERID,\n"
+                + "       U.USERNAME,\n"
+                + "       U.EMAIL\n"
+                + "FROM   EVENTS E\n"
+                + "       JOIN USERS U\n"
+                + "         ON E.CREATORID = U.USERID "
+                + "WHERE  E.NAME = ? ";
+        PreparedStatement statement = dbConnection.prepareStatement(sql);
+        statement.setString(1, eventName);
+        ResultSet result = statement.executeQuery();
+        Event e = null;
+        if (result.next()) {
+            e = new Event(result.getInt(1), result.getString(2),
+                    result.getString(3), result.getDate(4), result.getDate(5),
+                    result.getDate(6), new User(result.getInt(7),
+                            result.getString(8), result.getString(9)));
+        }
+        return e;
+    }
 }
