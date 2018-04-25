@@ -29,7 +29,7 @@
                 <input type="date" name="eventEnd" data-date2="" data-date-format="DD MMMM YYYY" value="2015-04-15">
                     <br>
                     <br>
-                <button value="registerEvent" type="submit" class="btn btn-default">Login</button>
+                <button value="registerEvent" type="submit" class="btn btn-default">Create Event</button>
             </form>
         </div>
     </body>
