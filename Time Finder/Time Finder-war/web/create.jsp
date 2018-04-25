@@ -16,17 +16,17 @@
     </head>
     <body>
         <div class="centerdiv bordered">
-            <form action="registerEvent" method="post">
+            <form action="createEventProcessing" method="post">
                 <h1 class="center">Create New Event</h1>
                 <label>Event Name:</label>
                 <p><input name="eventName"></p>
                 <label>Event Description</label>
                 <p><input name="eventDescription"></p>
                 <label>Start Date :</label><br>
-                <input type="date" name="start" data-date1="" data-date-format="DD MMMM YYYY" value="2018-04-15">
+                <input type="date" name="eventStart" data-date1="" data-date-format="DD MMMM YYYY" value="2018-04-15">
                     <br>
                 <label>End Date :</label><br>
-                <input type="date" name="end" data-date2="" data-date-format="DD MMMM YYYY" value="2015-04-15">
+                <input type="date" name="eventEnd" data-date2="" data-date-format="DD MMMM YYYY" value="2015-04-15">
                     <br>
                     <br>
                 <button value="registerEvent" type="submit" class="btn btn-default">Login</button>
