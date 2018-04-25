@@ -75,39 +75,9 @@ public class UserBean {
         return (statement.executeQuery()).next();
     }
 
-    @Deprecated
-    public String getUsername() throws SQLException {
-        if (!isLoggedIn()) {
-            return null;
-        }
-        String sql = "SELECT USERNAME\n"
-                + "FROM   USERS\n"
-                + "WHERE  SESSION = ?  ";
-        PreparedStatement statement = dbConnection.prepareStatement(sql);
-        statement.setString(1, getSessionID());
-        ResultSet result;
-        (result = (statement.executeQuery())).next();
-        return result.getString(1);
-    }
-
-    @Deprecated
-    public int getUserID() throws SQLException {
-        if (!isLoggedIn()) {
-            return -1;
-        }
-        String sql = "SELECT USERID\n"
-                + "FROM   USERS\n"
-                + "WHERE  SESSION = ?  ";
-        PreparedStatement statement = dbConnection.prepareStatement(sql);
-        statement.setString(1, getSessionID());
-        ResultSet result;
-        (result = (statement.executeQuery())).next();
-        return result.getInt(1);
-    }
-
     public User getUser() throws SQLException {
         if (!isLoggedIn()) {
-            return null;
+            return new User();
         }
         String sql = "SELECT USERID,\n"
                 + "       USERNAME,\n"
@@ -118,7 +88,7 @@ public class UserBean {
         statement.setString(1, getSessionID());
         ResultSet result = statement.executeQuery();
         if (!result.next()) {
-            return null;
+            return new User();
         }
         User user = new User(result.getInt(1), result.getString(2), result.getString(3));
         return user;
