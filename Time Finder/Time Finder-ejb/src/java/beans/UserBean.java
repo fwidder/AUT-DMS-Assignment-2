@@ -33,13 +33,13 @@ public class UserBean {
     public UserBean() throws SQLException {
         dbConnection = DriverManager.getConnection(Settings.dbUrl);
         DatabaseMetaData dbmd = dbConnection.getMetaData();
-        ResultSet rs = dbmd.getTables(null, null, "EVENTS", null);
-        if (!rs.next()) {
-            createEventsTables();
-        }
-        rs = dbmd.getTables(null, null, "USERS", null);
+        ResultSet rs = dbmd.getTables(null, null, "USERS", null);
         if (!rs.next()) {
             createUserTable();
+        }
+        rs = dbmd.getTables(null, null, "EVENTS", null);
+        if (!rs.next()) {
+            createEventsTables();
         }
         rs = dbmd.getTables(null, null, "EVENTS_USERS", null);
         if (!rs.next()) {
