@@ -40,7 +40,7 @@ public class logoutProcessing extends HttpServlet {
         session.setAttribute("loginerror", false);
         session.setAttribute("logout", true);
         session.setAttribute("register", false);
-                session.setAttribute("passerror", false);
+        session.setAttribute("passerror", false);
         String redirectURL = "index.jsp";
         response.sendRedirect(redirectURL);
     }

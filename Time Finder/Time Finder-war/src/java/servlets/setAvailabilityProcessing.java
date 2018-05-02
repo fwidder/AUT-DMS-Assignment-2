@@ -5,15 +5,23 @@
  */
 package servlets;
 
+import beans.EventBean;
+import beans.UserBean;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Event;
+import util.DateConverter;
 
 /**
  *
@@ -32,39 +40,24 @@ public class setAvailabilityProcessing extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try (PrintWriter out = response.getWriter()) {
+        try {
             response.setContentType("text/plain");
-            Enumeration<String> parameterNames = request.getParameterNames();
-            out.println("par");
-            out.println("-----------------------");
-            while (parameterNames.hasMoreElements()) {
-                String paramName = parameterNames.nextElement();
-                out.write(paramName);
-                out.write("n");
-                String[] paramValues = request.getParameterValues(paramName);
-                for (String paramValue : paramValues) {
-                    out.write("t" + paramValue);
-                    out.write("n");
+            ArrayList<Date> dates = new ArrayList<>();
+            Enumeration<String> params = request.getParameterNames();
+            while (params.hasMoreElements()) {
+                String param= params.nextElement();
+                if (param.startsWith("day")) {
+                    dates.add(DateConverter.convertToDate(request.getParameter(param)));
                 }
             }
-            out.println("atr");
-            out.println("-----------------------");
-            Enumeration<?> e = getServletContext().getAttributeNames();
-            while (e.hasMoreElements()) {
-                String name = (String) e.nextElement();
-                // Get the value of the attribute
-                Object value = getServletContext().getAttribute(name);
-                if (value instanceof Map) {
-                    ((Map<?, ?>) value).entrySet().stream().forEach((entry) -> {
-                        out.println(entry.getKey() + "=" + entry.getValue());
-                    });
-                } else if (value instanceof List) {
-                    for (Object element : (List) value) {
-                        out.println(element);
-                    }
-                }
-            }
-            out.println("-----------------------");
+            UserBean user = (UserBean) request.getSession().getAttribute("user");
+            EventBean event = (EventBean) request.getSession().getAttribute("event");
+            Event e = event.getEventByID(Integer.parseInt(request.getParameter("eventid")));
+            event.setAvailable(user.getUser().getUserID(), e.getEventID(), dates.toArray(new Date[0]));
+
+            response.sendRedirect("best.jsp");
+        } catch (ParseException | SQLException ex) {
+            Logger.getLogger(setAvailabilityProcessing.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

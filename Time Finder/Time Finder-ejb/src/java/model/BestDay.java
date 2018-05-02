@@ -15,14 +15,16 @@ public class BestDay {
 
     private Event event;
     private Date date;
+    private int number;
 
     public Event getEvent() {
         return event;
     }
 
-    public BestDay(Event event, Date date) {
+    public BestDay(Event event, Date date, int number) {
         this.event = event;
         this.date = date;
+        this.number = number;
     }
 
     public void setEvent(Event event) {
@@ -35,5 +37,13 @@ public class BestDay {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 }

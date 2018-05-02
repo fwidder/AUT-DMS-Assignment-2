@@ -14,7 +14,6 @@ import java.security.NoSuchAlgorithmException;
  * @author Flori
  */
 public class Hash {
-    
 
     public static String hashHex(String toHash) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");

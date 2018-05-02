@@ -13,6 +13,15 @@
         <link rel ="stylesheet" href="assets/css/create.css">
         <link rel ="stylesheet" href="assets/css/landing.css">
         <jsp:include page="navbar.jsp"></jsp:include>
+
+        <jsp:useBean id= "user" scope= "session" class= "beans.UserBean" ></jsp:useBean>
+        <jsp:useBean id= "event" scope= "session" class= "beans.EventBean"></jsp:useBean>
+        <%
+            String redirectURL = "index.jsp";
+            if (!user.isLoggedIn()) {
+                response.sendRedirect(redirectURL);
+            }
+        %> 
     </head>
     <body>
         <div class="centerdiv bordered">
@@ -24,11 +33,11 @@
                 <p><input name="eventDescription"></p>
                 <label>Start Date :</label><br>
                 <input type="date" name="eventStart" data-date1="" data-date-format="DD MMMM YYYY" value="2018-04-15">
-                    <br>
+                <br>
                 <label>End Date :</label><br>
                 <input type="date" name="eventEnd" data-date2="" data-date-format="DD MMMM YYYY" value="2015-04-15">
-                    <br>
-                    <br>
+                <br>
+                <br>
                 <button value="registerEvent" type="submit" class="btn btn-default">Create Event</button>
             </form>
         </div>
