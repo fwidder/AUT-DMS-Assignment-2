@@ -147,7 +147,7 @@ public class EventBean {
     }
     
     public Event[] getMyEvents(int userID) throws SQLException {
-        String sql = "SELECT E.EVNTID,\n"
+        String sql = "SELECT E.EVENTID,\n"
                 + "       E.NAME,\n"
                 + "       E.DESCRIPTION,\n"
                 + "       E.START,\n"
@@ -177,7 +177,7 @@ public class EventBean {
     }
     
     public Event getEventByID(int eventID) throws SQLException {
-        String sql = "SELECT E.EVNTID,\n"
+        String sql = "SELECT E.EVENTID,\n"
                 + "       E.NAME,\n"
                 + "       E.DESCRIPTION,\n"
                 + "       E.START,\n"

@@ -19,12 +19,21 @@
             <div class="centerdiv bordered">
                 <h5 class="center">Select event to set availability </h5>
                 <br>
-                <select>
-                <% Event[] events = event.getAllEvents();
+                <form action="event.jsp">
+                    <select id="selectedEvent" name="selectedEvent">
+                    <% Event[] events = event.getAllEvents();
                     for (int i = 0; i < events.length; i++) {%>
-                <option value="<%= events[i].getName()%> "><%= events[i].getName()%></option>
-                <%}%>
-                </select>
-            </div>
+                    <option value="<%= events[i].getName()%> "><%= events[i].getName()%></option>
+                    <%}%>
+                    </select>
+                    <input type="submit" value="Submit">
+                </form>
+        </div>
     </body>
+    <script>
+        $("selectedEvent").on("click", function () {
+            var event = document.getElementById("selectedEvent");
+
+        }).trigger("change")
+    </script>
 </html>
