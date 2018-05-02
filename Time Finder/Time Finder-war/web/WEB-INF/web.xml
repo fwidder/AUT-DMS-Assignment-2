@@ -20,6 +20,10 @@
         <servlet-name>createEventProcessing</servlet-name>
         <servlet-class>servlets.createEventProcessing</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>setAvailabilityProcessing</servlet-name>
+        <servlet-class>servlets.setAvailabilityProcessing</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>logoutProcessing</servlet-name>
         <url-pattern>/logoutProcessing</url-pattern>
@@ -39,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>createEventProcessing</servlet-name>
         <url-pattern>/createEventProcessing</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>setAvailabilityProcessing</servlet-name>
+        <url-pattern>/setAvailabilityProcessing</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -13,8 +13,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import javax.ejb.Stateless;
+import javax.ejb.Singleton;
 import javax.ejb.LocalBean;
+import model.BestDay;
 import model.Event;
 import model.User;
 import util.Settings;
@@ -23,12 +24,12 @@ import util.Settings;
  *
  * @author Florian Widder
  */
-@Stateless
+@Singleton
 @LocalBean
 public class EventBean {
-    
+
     private final Connection dbConnection;
-    
+
     public EventBean() throws SQLException {
         dbConnection = DriverManager.getConnection(Settings.dbUrl);
         DatabaseMetaData dbmd = dbConnection.getMetaData();
@@ -41,7 +42,7 @@ public class EventBean {
             createEventsUsersTables();
         }
     }
-    
+
     private void createEventsTables() throws SQLException {
         String sql = "CREATE TABLE EVENTS\n"
                 + "  (\n"
@@ -56,18 +57,18 @@ public class EventBean {
         PreparedStatement statement = dbConnection.prepareStatement(sql);
         statement.execute();
     }
-    
+
     private void createEventsUsersTables() throws SQLException {
         String sql = "CREATE TABLE EVENTS_USERS\n"
                 + "  (\n"
                 + "     MEMBERID  INT NOT NULL REFERENCES USERS(USERID),\n"
-                + "     EVENTID   INT NOT NULL REFERENCES USERS(USERID),\n"
+                + "     EVENTID   INT NOT NULL REFERENCES EVENTS(EVENTID),\n"
                 + "     AVAILABLE DATE NOT NULL\n"
                 + "  )  ";
         PreparedStatement statement = dbConnection.prepareStatement(sql);
         statement.execute();
     }
-    
+
     public void createEvent(int creatorID, String eventName,
             String eventDescription, Date eventStart, Date eventEnd)
             throws SQLException {
@@ -93,7 +94,7 @@ public class EventBean {
         statement.setDate(6, eventStart);
         statement.executeUpdate();
     }
-    
+
     public void setAvailable(int userID, int eventID, Date[] availableOn)
             throws SQLException {
         String sql = "INSERT INTO EVENTS_USERS\n"
@@ -111,15 +112,57 @@ public class EventBean {
             statement.executeUpdate();
         }
         //TODO Calculate and populate best Date
+        sql = "SELECT start,\n"
+                + "       ending\n"
+                + "FROM   events\n"
+                + "WHERE  eventid = ?  ";
+
+        statement = dbConnection.prepareStatement(sql);
+        statement.setInt(1, eventID);
+        ResultSet result = statement.executeQuery();
+        if (!result.next()) {
+            return;
+        }
+        Date start = result.getDate(1);
+        Date end = result.getDate(2);
+        Date best = start;
+        int numberBest = -1;
+        while (start.before(end)) {
+            sql = "SELECT COUNT(*)\n"
+                    + "FROM   EVENTS_USERS\n"
+                    + "GROUP BY EVENTID"
+                    + "HAVING  EVENTID = ? ";
+            statement = dbConnection.prepareStatement(sql);
+            statement.setInt(1, eventID);
+            result = statement.executeQuery();
+            if (!result.next()) {
+                return;
+            }
+            System.out.println(numberBest + "," + result.getInt(1));
+            if (numberBest < result.getInt(1)) {
+                numberBest = result.getInt(1);
+                best = start;
+            }
+            start = new Date(start.getTime() + 86400000);
+        }
+        sql = "UPDATE EVENTS\n"
+                + "SET    BEST = ?\n"
+                + "WHERE  EVENTID = ? ";
+        statement = dbConnection.prepareStatement(sql);
+        statement.setDate(1, best);
+        statement.setInt(2, eventID);
+        statement.execute();
+        System.out.println(best.toString());
+
     }
-    
+
     public void setAvailable(int userID, int eventID, Date availableOn)
             throws SQLException {
         Date[] dates = new Date[1];
         dates[0] = availableOn;
         setAvailable(userID, eventID, dates);
     }
-    
+
     public Event[] getAllEvents() throws SQLException {
         String sql = "SELECT E.EVENTID,\n"
                 + "       E.NAME,\n"
@@ -145,9 +188,9 @@ public class EventBean {
         }
         return eventList.toArray(new Event[0]);
     }
-    
+
     public Event[] getMyEvents(int userID) throws SQLException {
-        String sql = "SELECT E.EVNTID,\n"
+        String sql = "SELECT E.EVENTID,\n"
                 + "       E.NAME,\n"
                 + "       E.DESCRIPTION,\n"
                 + "       E.START,\n"
@@ -175,9 +218,9 @@ public class EventBean {
         }
         return eventList.toArray(new Event[0]);
     }
-    
+
     public Event getEventByID(int eventID) throws SQLException {
-        String sql = "SELECT E.EVNTID,\n"
+        String sql = "SELECT E.EVENTID,\n"
                 + "       E.NAME,\n"
                 + "       E.DESCRIPTION,\n"
                 + "       E.START,\n"
@@ -202,9 +245,9 @@ public class EventBean {
         }
         return e;
     }
-    
+
     public Event getEventByName(String eventName) throws SQLException {
-        String sql = "SELECT E.EVNTID,\n"
+        String sql = "SELECT E.EVENTID,\n"
                 + "       E.NAME,\n"
                 + "       E.DESCRIPTION,\n"
                 + "       E.START,\n"
@@ -228,5 +271,22 @@ public class EventBean {
                             result.getString(8), result.getString(9)));
         }
         return e;
+    }
+
+    public BestDay getBestDayByID(int id) throws SQLException {
+        String sql = "SELECT COUNT(AVAILABLE),\n"
+                + "       AVAILABLE\n"
+                + "FROM   EVENTS_USERS\n"
+                + "WHERE  EVENTID = 7\n"
+                + "GROUP  BY AVAILABLE";
+        PreparedStatement statement = dbConnection.prepareStatement(sql);
+        statement.setInt(1, id);
+        ResultSet result = statement.executeQuery();
+        Date d = null;
+        if (result.next()) {
+            d = result.getDate(1);
+        }
+        Event e = getEventByID(id);
+        return new BestDay(e,d);
     }
 }
