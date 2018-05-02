@@ -5,8 +5,6 @@
  */
 package beans;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -14,7 +12,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.ejb.Stateless;
+import javax.ejb.Stateful;
 import javax.ejb.LocalBean;
 import model.User;
 import util.Hash;
@@ -24,7 +22,7 @@ import util.Settings;
  *
  * @author Florian Widder
  */
-@Stateless
+@Stateful
 @LocalBean
 public class UserBean {
 
