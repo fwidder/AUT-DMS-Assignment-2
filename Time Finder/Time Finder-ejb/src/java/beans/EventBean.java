@@ -37,6 +37,10 @@ public class EventBean {
         if (!rs.next()) {
             createEventsTables();
         }
+        rs = dbmd.getTables(null, null, "USERS", null);
+        if (!rs.next()) {
+            createUserTable();
+        }
         rs = dbmd.getTables(null, null, "EVENTS_USERS", null);
         if (!rs.next()) {
             createEventsUsersTables();
@@ -65,6 +69,20 @@ public class EventBean {
                 + "     EVENTID   INT NOT NULL REFERENCES EVENTS(EVENTID),\n"
                 + "     AVAILABLE DATE NOT NULL\n"
                 + "  )  ";
+        PreparedStatement statement = dbConnection.prepareStatement(sql);
+        statement.execute();
+    }
+    
+
+    private void createUserTable() throws SQLException {
+        String sql = "CREATE TABLE USERS\n"
+                + "  (\n"
+                + "     USERID   INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),\n"
+                + "     USERNAME VARCHAR(255) UNIQUE NOT NULL,\n"
+                + "     PASSWORD VARCHAR(255) NOT NULL,\n"
+                + "     EMAIL    VARCHAR(255) UNIQUE NOT NULL,\n"
+                + "     SESSION  VARCHAR(255)\n"
+                + "  ) ";
         PreparedStatement statement = dbConnection.prepareStatement(sql);
         statement.execute();
     }

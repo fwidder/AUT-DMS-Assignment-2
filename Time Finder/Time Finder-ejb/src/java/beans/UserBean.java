@@ -8,6 +8,7 @@ package beans;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,10 +33,44 @@ public class UserBean {
     public UserBean() throws SQLException {
         dbConnection = DriverManager.getConnection(Settings.dbUrl);
         DatabaseMetaData dbmd = dbConnection.getMetaData();
-        ResultSet rs = dbmd.getTables(null, null, "USERS", null);
+        ResultSet rs = dbmd.getTables(null, null, "EVENTS", null);
+        if (!rs.next()) {
+            createEventsTables();
+        }
+        rs = dbmd.getTables(null, null, "USERS", null);
         if (!rs.next()) {
             createUserTable();
         }
+        rs = dbmd.getTables(null, null, "EVENTS_USERS", null);
+        if (!rs.next()) {
+            createEventsUsersTables();
+        }
+    }
+
+    private void createEventsTables() throws SQLException {
+        String sql = "CREATE TABLE EVENTS\n"
+                + "  (\n"
+                + "     EVENTID     INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),\n"
+                + "     CREATORID   INT NOT NULL REFERENCES USERS(USERID),\n"
+                + "     NAME        VARCHAR(30) NOT NULL UNIQUE,\n"
+                + "     DESCRIPTION VARCHAR(1000),\n"
+                + "     START       DATE NOT NULL,\n"
+                + "     ENDING      DATE NOT NULL,\n"
+                + "     BEST        DATE\n"
+                + "  ) ";
+        PreparedStatement statement = dbConnection.prepareStatement(sql);
+        statement.execute();
+    }
+
+    private void createEventsUsersTables() throws SQLException {
+        String sql = "CREATE TABLE EVENTS_USERS\n"
+                + "  (\n"
+                + "     MEMBERID  INT NOT NULL REFERENCES USERS(USERID),\n"
+                + "     EVENTID   INT NOT NULL REFERENCES EVENTS(EVENTID),\n"
+                + "     AVAILABLE DATE NOT NULL\n"
+                + "  )  ";
+        PreparedStatement statement = dbConnection.prepareStatement(sql);
+        statement.execute();
     }
 
     private void createUserTable() throws SQLException {
@@ -49,6 +84,32 @@ public class UserBean {
                 + "  ) ";
         PreparedStatement statement = dbConnection.prepareStatement(sql);
         statement.execute();
+    }
+
+    public void createEvent(int creatorID, String eventName,
+            String eventDescription, Date eventStart, Date eventEnd)
+            throws SQLException {
+        String sql = "INSERT INTO EVENTS\n"
+                + "            (CREATORID,\n"
+                + "             NAME,\n"
+                + "             DESCRIPTION,\n"
+                + "             START,\n"
+                + "             ENDING,"
+                + "             BEST)\n"
+                + "VALUES     (?,\n"
+                + "            ?,\n"
+                + "            ?,\n"
+                + "            ?,\n"
+                + "            ?,\n"
+                + "            ?)";
+        PreparedStatement statement = dbConnection.prepareStatement(sql);
+        statement.setInt(1, creatorID);
+        statement.setString(2, eventName);
+        statement.setString(3, eventDescription);
+        statement.setDate(4, eventStart);
+        statement.setDate(5, eventEnd);
+        statement.setDate(6, eventStart);
+        statement.executeUpdate();
     }
 
     public boolean isLoggedIn() throws SQLException {
