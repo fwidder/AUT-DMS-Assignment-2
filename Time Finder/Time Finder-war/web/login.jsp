@@ -33,7 +33,7 @@
                 register = "block";
             }
         %>
-       <jsp:include page="navbar.jsp"></jsp:include>
+        <jsp:include page="navbar.jsp"></jsp:include>
         <div class="alert alert-warning" role="alert" style=" display:<%=loginerror%>">
             Wrong Username or Password! Try again!
         </div>

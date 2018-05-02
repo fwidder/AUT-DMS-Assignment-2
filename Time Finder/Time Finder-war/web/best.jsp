@@ -5,11 +5,17 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-        <link rel ="stylesheet" href="assets/css/landing.css">
-        <link rel ="stylesheet" href="assets/css/selectDays.css">
-        <jsp:include page="navbar.jsp"></jsp:include>
-        <jsp:useBean id= "user" scope= "session" class= "beans.UserBean" ></jsp:useBean>
-        <jsp:useBean id= "event" scope= "session" class= "beans.EventBean"></jsp:useBean>
+<link rel ="stylesheet" href="assets/css/landing.css">
+<link rel ="stylesheet" href="assets/css/selectDays.css">
+<jsp:include page="navbar.jsp"></jsp:include>  
+<jsp:useBean id= "user" scope= "session" class= "beans.UserBean" ></jsp:useBean>
+<jsp:useBean id= "event" scope= "session" class= "beans.EventBean"></jsp:useBean>
+<%
+    String redirectURL = "index.jsp";
+    if (!user.isLoggedIn()) {
+        response.sendRedirect(redirectURL);
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>

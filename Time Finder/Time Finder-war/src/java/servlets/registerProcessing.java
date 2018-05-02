@@ -43,7 +43,7 @@ public class registerProcessing extends HttpServlet {
             UserBean user = (UserBean) request.getSession().getAttribute("user");
             HttpSession session = request.getSession();
             String redirectURL;
-            if (!request.getParameter("password").equals(request.getParameter("passwordrepeat")) || request.getParameter("username") == null || request.getParameter("username").trim().equals("")|| request.getParameter("email") == null || request.getParameter("email").trim().equals("")) {
+            if (!request.getParameter("password").equals(request.getParameter("passwordrepeat")) || request.getParameter("username") == null || request.getParameter("username").trim().equals("") || request.getParameter("email") == null || request.getParameter("email").trim().equals("")) {
                 session.setAttribute("register", false);
                 session.setAttribute("passerror", true);
                 redirectURL = "register.jsp";

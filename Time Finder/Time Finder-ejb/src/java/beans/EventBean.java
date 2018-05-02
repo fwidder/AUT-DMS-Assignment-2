@@ -111,49 +111,7 @@ public class EventBean {
             statement.setDate(3, d);
             statement.executeUpdate();
         }
-        //TODO Calculate and populate best Date
-        sql = "SELECT start,\n"
-                + "       ending\n"
-                + "FROM   events\n"
-                + "WHERE  eventid = ?  ";
-
-        statement = dbConnection.prepareStatement(sql);
-        statement.setInt(1, eventID);
-        ResultSet result = statement.executeQuery();
-        if (!result.next()) {
-            return;
-        }
-        Date start = result.getDate(1);
-        Date end = result.getDate(2);
-        Date best = start;
-        int numberBest = -1;
-        while (start.before(end)) {
-            sql = "SELECT COUNT(*)\n"
-                    + "FROM   EVENTS_USERS\n"
-                    + "GROUP BY EVENTID"
-                    + "HAVING  EVENTID = ? ";
-            statement = dbConnection.prepareStatement(sql);
-            statement.setInt(1, eventID);
-            result = statement.executeQuery();
-            if (!result.next()) {
-                return;
-            }
-            System.out.println(numberBest + "," + result.getInt(1));
-            if (numberBest < result.getInt(1)) {
-                numberBest = result.getInt(1);
-                best = start;
-            }
-            start = new Date(start.getTime() + 86400000);
-        }
-        sql = "UPDATE EVENTS\n"
-                + "SET    BEST = ?\n"
-                + "WHERE  EVENTID = ? ";
-        statement = dbConnection.prepareStatement(sql);
-        statement.setDate(1, best);
-        statement.setInt(2, eventID);
-        statement.execute();
-        System.out.println(best.toString());
-
+        getBestDayByID(eventID);
     }
 
     public void setAvailable(int userID, int eventID, Date availableOn)
@@ -274,19 +232,29 @@ public class EventBean {
     }
 
     public BestDay getBestDayByID(int id) throws SQLException {
-        String sql = "SELECT COUNT(AVAILABLE),\n"
+        String sql = "SELECT COUNT(AVAILABLE) AS NR,\n"
                 + "       AVAILABLE\n"
                 + "FROM   EVENTS_USERS\n"
-                + "WHERE  EVENTID = 7\n"
-                + "GROUP  BY AVAILABLE";
+                + "WHERE  EVENTID = ?\n"
+                + "GROUP  BY AVAILABLE\n"
+                + "ORDER  BY COUNT(AVAILABLE) DESC\n";
         PreparedStatement statement = dbConnection.prepareStatement(sql);
         statement.setInt(1, id);
         ResultSet result = statement.executeQuery();
         Date d = null;
+        int anz = -1;
         if (result.next()) {
-            d = result.getDate(1);
+            anz = result.getInt(1);
+            d = result.getDate(2);
         }
+        sql = "UPDATE EVENTS\n"
+                + "SET    BEST = ?\n"
+                + "WHERE  EVENTID = ?";
+        statement = dbConnection.prepareStatement(sql);
+        statement.setDate(1, d);
+        statement.setInt(2, id);
+        statement.executeUpdate();
         Event e = getEventByID(id);
-        return new BestDay(e,d);
+        return new BestDay(e, d, anz);
     }
 }
