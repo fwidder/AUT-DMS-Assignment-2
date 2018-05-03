@@ -27,7 +27,7 @@
     <body>
         <div class="centerdiv bordered">
             <h1>Current Best day</h1>
-            <% int id = Integer.parseInt(request.getParameter("eventID")); %>
+            <% int id = Integer.parseInt(session.getAttribute("eventID").toString()); %>
             <% Event e = event.getEventByID(id);
              Date best = e.getBest(); %>
              <h1><%= best.toString() %>

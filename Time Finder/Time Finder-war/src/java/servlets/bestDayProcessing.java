@@ -8,9 +8,8 @@ package servlets;
 import beans.EventBean;
 import beans.UserBean;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -18,13 +17,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.Event;
 import util.DateConverter;
 
 /**
  *
  * @author Flori
  */
-public class createEventProcessing extends HttpServlet {
+public class bestDayProcessing extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,25 +34,24 @@ public class createEventProcessing extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
-     * @throws java.sql.SQLException
-     * @throws java.security.NoSuchAlgorithmException
-     * @throws java.text.ParseException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException, NoSuchAlgorithmException, ParseException {
+            throws ServletException, IOException {
+
         response.setContentType("text/html;charset=UTF-8");
-        UserBean user = (UserBean) request.getSession().getAttribute("user");
         EventBean event = (EventBean) request.getSession().getAttribute("event");
-        String redirectURL = "available.jsp";
+        int id = -1;
+        try {
+            String param = request.getParameter("selectedEvent");
+            Event e = event.getEventByName(param);
+            System.out.println(e);
+            id = e.getEventID();
+        } catch (SQLException ex) {
+            Logger.getLogger(bestDayProcessing.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String redirectURL = "best.jsp";
         HttpSession session = request.getSession();
-        event.createEvent(user.getUser().getUserID(), request.getParameter("eventName"),
-                request.getParameter("eventDescription"), DateConverter.convertToDate(request.getParameter("eventStart")),
-                DateConverter.convertToDate(request.getParameter("eventEnd")));
-        session.setAttribute("newEvent", true);
-        session.setAttribute("loginerror", false);
-        session.setAttribute("logout", false);
-        session.setAttribute("register", false);
-        session.setAttribute("passerror", false);
+        session.setAttribute("eventID", id);
         response.sendRedirect(redirectURL);
     }
 
@@ -68,11 +67,7 @@ public class createEventProcessing extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (SQLException | NoSuchAlgorithmException | ParseException ex) {
-            Logger.getLogger(createEventProcessing.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -86,11 +81,7 @@ public class createEventProcessing extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (SQLException | NoSuchAlgorithmException | ParseException ex) {
-            Logger.getLogger(createEventProcessing.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**

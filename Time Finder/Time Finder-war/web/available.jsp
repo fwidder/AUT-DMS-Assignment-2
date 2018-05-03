@@ -38,7 +38,7 @@
         <div class="centerdiv bordered">
             <h5 class="center">Select event to set availability </h5>
             <br>
-            <form action="createEventProcessing">
+            <form action="bestDayProcessing">
                 <select id="selectedEvent2" name="selectedEvent">
                     <% Event[] events2 = event.getAllEvents();
                         for (int i = 0; i < events.length; i++) {%>
