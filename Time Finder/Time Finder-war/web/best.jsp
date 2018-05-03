@@ -1,9 +1,11 @@
 <%-- 
     Document   : best
     Created on : 25/04/2018, 4:28:18 PM
-    Author     : Liandri
+    Author     : Glen Osborne and Florian Widder
 --%>
 
+<%@page import="java.sql.Date"%>
+<%@page import="model.Event"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <link rel ="stylesheet" href="assets/css/landing.css">
 <link rel ="stylesheet" href="assets/css/selectDays.css">
@@ -24,7 +26,12 @@
     </head>
     <body>
         <div class="centerdiv bordered">
-            <h1>Hello World!</h1>
+            <h1>Current Best day</h1>
+            <% int id = Integer.parseInt(request.getParameter("eventID")); %>
+            <% Event e = event.getEventByID(id);
+             Date best = e.getBest(); %>
+             <h1><%= best.toString() %>
+            
         </div>
     </body>
 </html>

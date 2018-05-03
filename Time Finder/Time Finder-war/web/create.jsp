@@ -1,7 +1,7 @@
 <%-- 
     Document   : create
     Created on : 25/04/2018, 10:58:08 AM
-    Author     : Liandri
+    Author     : Glen Osborne and Florian Widder
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

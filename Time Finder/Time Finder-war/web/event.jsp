@@ -1,7 +1,7 @@
 <%-- 
     Document   : event
     Created on : 25/04/2018, 3:35:17 PM
-    Author     : Liandri
+    Author     : Glen Osborne and Florian Widder
 --%>
 
 <%@page import="java.sql.Date"%>
@@ -32,8 +32,9 @@
                         int id = event.getEventByName(request.getParameter("selectedEvent")).getEventID();
                         Event e = event.getEventByID(id);
                         Date s = e.getStart();
+                        Date end = new Date(e.getEnd().getTime() + 86400000);
                         int index = 1;
-                        while (s.before(e.getEnd())) {
+                        do {
                     %>
                     <div class="centerdiv bordered">
 
@@ -44,7 +45,7 @@
                     <%
                             s = new Date(s.getTime() + 86400000);
                             index = index + 1;
-                        }
+                        } while (s.before(end));
                     %>
                     <input type="submit" value="Submit">             
                 </form> 

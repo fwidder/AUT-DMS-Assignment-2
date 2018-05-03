@@ -1,7 +1,7 @@
 <%-- 
     Document   : index
     Created on : 24.04.2018, 02:36:34
-    Author     : Florian Widder
+    Author     : Glen Osborne and Florian Widder
 --%>
 
 <!DOCTYPE html>

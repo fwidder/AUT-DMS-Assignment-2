@@ -1,7 +1,7 @@
 <%-- 
     Document   : available
     Created on : 25/04/2018, 11:11:02 AM
-    Author     : Liandri
+    Author     : Glen Osborne and Florian Widder
 --%>
 
 <%@page import="model.Event"%>
@@ -32,14 +32,26 @@
                     <option value="<%= events[i].getName()%> "><%= events[i].getName()%></option>
                     <%}%>
                 </select>
-                <input type="submit" value="Submit">
+                <input type="submit" value="Submit" name="event">
+            </form>
+        </div>
+        <div class="centerdiv bordered">
+            <h5 class="center">Select event to set availability </h5>
+            <br>
+            <form action="createEventProcessing">
+                <select id="selectedEvent" name="selectedEvent">
+                    <% Event[] events2 = event.getAllEvents();
+                        for (int i = 0; i < events.length; i++) {%>
+                    <option value="<%= events2[i].getName()%> "><%= events2[i].getName()%></option>
+                    <%}%>
+                </select>
+                <input type="submit" value="Submit" name="best">
             </form>
         </div>
     </body>
     <script>
         $("selectedEvent").on("click", function () {
             var event = document.getElementById("selectedEvent");
-
-        }).trigger("change")
+        }).trigger("change");
     </script>
 </html>

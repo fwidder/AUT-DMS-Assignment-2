@@ -1,7 +1,7 @@
 <%-- 
     Document   : navbar
     Created on : 25/04/2018, 12:33:44 PM
-    Author     : Liandri
+    Author     : Glen Osborne and Florian Widder
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

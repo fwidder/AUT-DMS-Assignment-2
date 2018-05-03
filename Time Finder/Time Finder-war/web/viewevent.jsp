@@ -1,7 +1,7 @@
 <%-- 
     Document   : viewevent
     Created on : 25/04/2018, 11:11:21 AM
-    Author     : Liandri
+    Author     : Glen Osborne and Florian Widder
 --%>
 
 <%@page import="model.Event"%>
