@@ -39,7 +39,7 @@
             <h5 class="center">Select event to set availability </h5>
             <br>
             <form action="createEventProcessing">
-                <select id="selectedEvent" name="selectedEvent">
+                <select id="selectedEvent2" name="selectedEvent">
                     <% Event[] events2 = event.getAllEvents();
                         for (int i = 0; i < events.length; i++) {%>
                     <option value="<%= events2[i].getName()%> "><%= events2[i].getName()%></option>
