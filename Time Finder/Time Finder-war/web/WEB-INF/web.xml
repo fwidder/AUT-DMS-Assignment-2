@@ -24,6 +24,10 @@
         <servlet-name>setAvailabilityProcessing</servlet-name>
         <servlet-class>servlets.setAvailabilityProcessing</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>bestDayProcessing</servlet-name>
+        <servlet-class>servlets.bestDayProcessing</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>logoutProcessing</servlet-name>
         <url-pattern>/logoutProcessing</url-pattern>
@@ -47,6 +51,10 @@
     <servlet-mapping>
         <servlet-name>setAvailabilityProcessing</servlet-name>
         <url-pattern>/setAvailabilityProcessing</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>bestDayProcessing</servlet-name>
+        <url-pattern>/bestDayProcessing</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
