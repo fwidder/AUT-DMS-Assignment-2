@@ -2,6 +2,7 @@
     Document   : best
     Created on : 25/04/2018, 4:28:18 PM
     Author     : Glen Osborne and Florian Widder
+    Best Date  : for the pre selected event the best date will be displayed 
 --%>
 
 <%@page import="java.sql.Date"%>
@@ -12,6 +13,7 @@
 <jsp:include page="navbar.jsp"></jsp:include>  
 <jsp:useBean id= "user" scope= "session" class= "beans.UserBean" ></jsp:useBean>
 <jsp:useBean id= "event" scope= "session" class= "beans.EventBean"></jsp:useBean>
+    <!--   REDIRECT IF NOT LOGGED IN          -->
 <%
     String redirectURL = "index.jsp";
     if (!user.isLoggedIn()) {
@@ -25,6 +27,7 @@
         <title>Best day so far</title>
     </head>
     <body>
+        <!--   display the best day so far...         -->
         <div class="centerdiv bordered">
             <h1>Current Best day</h1>
             <% int id = Integer.parseInt(session.getAttribute("eventID").toString()); %>

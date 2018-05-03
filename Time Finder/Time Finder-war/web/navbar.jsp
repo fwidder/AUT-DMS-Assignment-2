@@ -2,6 +2,7 @@
     Document   : navbar
     Created on : 25/04/2018, 12:33:44 PM
     Author     : Glen Osborne and Florian Widder
+    Navigation : the navbar is included in all pages
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -28,7 +29,7 @@
             }
         %>
 
-
+        <!--   OPTIONS CHANGE WHEN LOGGED IN          -->
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="#">Time Finder</a>

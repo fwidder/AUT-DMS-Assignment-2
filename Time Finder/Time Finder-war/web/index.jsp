@@ -2,6 +2,9 @@
     Document   : index
     Created on : 24.04.2018, 02:36:34
     Author     : Glen Osborne and Florian Widder
+ 
+    Landing page : display what is possable to user, 
+    must be logged in to navigate to other pages
 --%>
 
 <!DOCTYPE html>
@@ -15,7 +18,6 @@
     </head>
     <body>
         <h1 class="center">Welcome to Time Finder</h1>
-
         <div class="centerdiv">
             <img src="./assets/images/clock.jpg" alt="Smiley face" height="100" width="auto">
         </div>
@@ -49,6 +51,5 @@
                 </div>
             </div>
         </div>
-
     </body>
 </html>

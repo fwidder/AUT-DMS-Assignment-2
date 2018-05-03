@@ -2,6 +2,7 @@
     Document   : index
     Created on : 24.04.2018, 02:36:34
     Author     : Glen Osborne and Florian Widder
+    Register   : allow users to register to be able to login
 --%>
 
 <!DOCTYPE html>

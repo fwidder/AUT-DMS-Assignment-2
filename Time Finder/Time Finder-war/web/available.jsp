@@ -2,6 +2,9 @@
     Document   : available
     Created on : 25/04/2018, 11:11:02 AM
     Author     : Glen Osborne and Florian Widder
+
+    Available  : this page prompt the user to select an event to either select
+    an event to set availablity or to review the best date so far
 --%>
 
 <%@page import="model.Event"%>
@@ -14,6 +17,7 @@
         <jsp:include page="navbar.jsp"></jsp:include>
         <jsp:useBean id= "user" scope= "session" class= "beans.UserBean" ></jsp:useBean>
         <jsp:useBean id= "event" scope= "session" class= "beans.EventBean"></jsp:useBean>
+        <!--   REDIRECT IF NOT LOGGED IN          -->
         <%
             String redirectURL = "index.jsp";
             if (!user.isLoggedIn()) {
@@ -28,6 +32,7 @@
         <div class="centerdiv bordered">
             <h5 class="center">Select event to set availability </h5>
             <br>
+            <!--   PRESENT THE EVENTS LIST TO SELECT AN EVENT TO SET AVAILABLITY          -->
             <form action="event.jsp">
                 <select id="selectedEvent" name="selectedEvent">
                     <% Event[] events = event.getAllEvents();
@@ -44,6 +49,7 @@
         <div class="centerdiv bordered">
             <h5 class="center">Select event to view best day so far... </h5>
             <br>
+            <!--   SELECT AN EVENT TO SEE THE BEST DATE         -->
             <form action="bestDayProcessing">
                 <select id="selectedEvent2" name="selectedEvent">
                     <% Event[] events2 = event.getAllEvents();
@@ -55,6 +61,7 @@
             </form>
         </div>
     </body>
+    <!--   GET THE SELECTED NAME OF THE EVENT FROM DROP DOWN LIST          -->
     <script>
         $("selectedEvent").on("click", function () {
             var event = document.getElementById("selectedEvent");

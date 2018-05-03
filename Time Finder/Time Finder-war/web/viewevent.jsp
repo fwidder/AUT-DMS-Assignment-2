@@ -2,6 +2,7 @@
     Document   : viewevent
     Created on : 25/04/2018, 11:11:21 AM
     Author     : Glen Osborne and Florian Widder
+    View Event : Table data of the events
 --%>
 
 <%@page import="model.Event"%>

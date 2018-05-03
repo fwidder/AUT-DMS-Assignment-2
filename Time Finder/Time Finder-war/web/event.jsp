@@ -2,6 +2,8 @@
     Document   : event
     Created on : 25/04/2018, 3:35:17 PM
     Author     : Glen Osborne and Florian Widder
+    event      : display all the days between start and end date so
+    users can select the day or days they are available
 --%>
 
 <%@page import="java.sql.Date"%>
@@ -16,6 +18,7 @@
         <jsp:include page="navbar.jsp"></jsp:include>
         <jsp:useBean id= "user" scope= "session" class= "beans.UserBean" ></jsp:useBean>
         <jsp:useBean id= "event" scope= "session" class= "beans.EventBean"></jsp:useBean>
+        <!--   REDIRECT IF NOT LOGGED IN          -->
         <%
             String redirectURL = "index.jsp";
             if (!user.isLoggedIn()) {
@@ -24,6 +27,7 @@
         %> 
     </head>
     <body>
+        <!--   display check boxes for each day between start and finish dates          -->
         <div class="centerdiv">
             <h5><%= user.getUser().getName()%> Enter Your availability For <%= request.getParameter("selectedEvent")%></h5>
             <div class="day">
@@ -51,7 +55,5 @@
                 </form> 
             </div>
         </div>
-
-
     </body>
 </html>
