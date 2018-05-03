@@ -40,8 +40,10 @@
         <div class="alert alert-success" role="alert" style=" display:<%=register%>">
             Successfully registered!
         </div>
-
-        <section class="container-fluid">
+            <br>
+            <h5 class="center">Please Login</h5>
+            <br>
+        <section class="container-fluid bordered centerdiv">
             <form action="loginProcessing" method="post">
                 <div class="form-group">
                     <label for="username">Username:</label>

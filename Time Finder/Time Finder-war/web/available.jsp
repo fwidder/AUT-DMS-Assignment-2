@@ -22,6 +22,9 @@
         %>
     </head>
     <body>
+        <br>
+        <h5 class="center">Set availability</h5>
+        <br>
         <div class="centerdiv bordered">
             <h5 class="center">Select event to set availability </h5>
             <br>
@@ -35,8 +38,11 @@
                 <input type="submit" value="Submit" name="event">
             </form>
         </div>
+        <br>
+        <h5 class="center">Get Best date for event</h5>
+        <br>
         <div class="centerdiv bordered">
-            <h5 class="center">Select event to set availability </h5>
+            <h5 class="center">Select event to view best day so far... </h5>
             <br>
             <form action="bestDayProcessing">
                 <select id="selectedEvent2" name="selectedEvent">
