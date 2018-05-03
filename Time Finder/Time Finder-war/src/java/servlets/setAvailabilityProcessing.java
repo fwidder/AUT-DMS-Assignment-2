@@ -12,7 +12,6 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.Event;
 import util.DateConverter;
 
@@ -45,7 +45,7 @@ public class setAvailabilityProcessing extends HttpServlet {
             ArrayList<Date> dates = new ArrayList<>();
             Enumeration<String> params = request.getParameterNames();
             while (params.hasMoreElements()) {
-                String param= params.nextElement();
+                String param = params.nextElement();
                 if (param.startsWith("day")) {
                     dates.add(DateConverter.convertToDate(request.getParameter(param)));
                 }
@@ -54,7 +54,8 @@ public class setAvailabilityProcessing extends HttpServlet {
             EventBean event = (EventBean) request.getSession().getAttribute("event");
             Event e = event.getEventByID(Integer.parseInt(request.getParameter("eventid")));
             event.setAvailable(user.getUser().getUserID(), e.getEventID(), dates.toArray(new Date[0]));
-
+            HttpSession session = request.getSession();
+            session.setAttribute("eventID", e.getEventID());
             response.sendRedirect("best.jsp");
         } catch (ParseException | SQLException ex) {
             Logger.getLogger(setAvailabilityProcessing.class.getName()).log(Level.SEVERE, null, ex);

@@ -30,7 +30,13 @@ public class EventBean {
 
     private final Connection dbConnection;
 
+    /**
+     * Creates a new EventBean
+     *
+     * @throws SQLException
+     */
     public EventBean() throws SQLException {
+        //Creat tables if they not exist
         dbConnection = DriverManager.getConnection(Settings.dbUrl);
         DatabaseMetaData dbmd = dbConnection.getMetaData();
         ResultSet rs = dbmd.getTables(null, null, "USERS", null);
@@ -47,6 +53,13 @@ public class EventBean {
         }
     }
 
+    /**
+     * Creates the Events Table
+     *
+     * Throws an error if Table exists
+     *
+     * @throws SQLException
+     */
     private void createEventsTables() throws SQLException {
         String sql = "CREATE TABLE EVENTS\n"
                 + "  (\n"
@@ -62,6 +75,13 @@ public class EventBean {
         statement.execute();
     }
 
+    /**
+     * Creates the Events_Users Table
+     *
+     * Throws an error if Table exists
+     *
+     * @throws SQLException
+     */
     private void createEventsUsersTables() throws SQLException {
         String sql = "CREATE TABLE EVENTS_USERS\n"
                 + "  (\n"
@@ -73,6 +93,13 @@ public class EventBean {
         statement.execute();
     }
 
+    /**
+     * Creates the Events Users
+     *
+     * Throws an error if Table exists
+     *
+     * @throws SQLException
+     */
     private void createUserTable() throws SQLException {
         String sql = "CREATE TABLE USERS\n"
                 + "  (\n"
@@ -86,6 +113,16 @@ public class EventBean {
         statement.execute();
     }
 
+    /**
+     * Creates a new Event
+     *
+     * @param creatorID
+     * @param eventName
+     * @param eventDescription
+     * @param eventStart
+     * @param eventEnd
+     * @throws SQLException
+     */
     public void createEvent(int creatorID, String eventName,
             String eventDescription, Date eventStart, Date eventEnd)
             throws SQLException {
@@ -112,6 +149,13 @@ public class EventBean {
         statement.executeUpdate();
     }
 
+    /**
+     *
+     * @param userID
+     * @param eventID
+     * @param availableOn
+     * @throws SQLException
+     */
     public void setAvailable(int userID, int eventID, Date[] availableOn)
             throws SQLException {
         String sql = "INSERT INTO EVENTS_USERS\n"
@@ -128,7 +172,7 @@ public class EventBean {
             statement.setDate(3, d);
             statement.executeUpdate();
         }
-        getBestDayByID(eventID);
+        setBestDayByID(eventID);
     }
 
     public void setAvailable(int userID, int eventID, Date availableOn)
@@ -248,7 +292,7 @@ public class EventBean {
         return e;
     }
 
-    public BestDay getBestDayByID(int id) throws SQLException {
+    private void setBestDayByID(int id) throws SQLException {
         String sql = "SELECT COUNT(AVAILABLE) AS NR,\n"
                 + "       AVAILABLE\n"
                 + "FROM   EVENTS_USERS\n"
@@ -271,7 +315,5 @@ public class EventBean {
         statement.setDate(1, d);
         statement.setInt(2, id);
         statement.executeUpdate();
-        Event e = getEventByID(id);
-        return new BestDay(e, d, anz);
     }
 }

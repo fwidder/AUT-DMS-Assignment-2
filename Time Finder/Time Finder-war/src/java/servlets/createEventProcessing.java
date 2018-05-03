@@ -41,19 +41,27 @@ public class createEventProcessing extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException, NoSuchAlgorithmException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
-        UserBean user = (UserBean) request.getSession().getAttribute("user");
         EventBean event = (EventBean) request.getSession().getAttribute("event");
-        String redirectURL = "available.jsp";
         HttpSession session = request.getSession();
-        event.createEvent(user.getUser().getUserID(), request.getParameter("eventName"),
-                request.getParameter("eventDescription"), DateConverter.convertToDate(request.getParameter("eventStart")),
-                DateConverter.convertToDate(request.getParameter("eventEnd")));
-        session.setAttribute("newEvent", true);
-        session.setAttribute("loginerror", false);
-        session.setAttribute("logout", false);
-        session.setAttribute("register", false);
-        session.setAttribute("passerror", false);
-        response.sendRedirect(redirectURL);
+        if (request.getParameter("best") != null) {
+            int id = event.getEventByName(request.getParameter("selectedEvent2")).getEventID();
+            session.setAttribute("eventID", id);
+            String redirectURL = "best.jsp";
+            response.sendRedirect(redirectURL);
+            // do something
+        } else if (request.getParameter("create") != null) {
+            UserBean user = (UserBean) request.getSession().getAttribute("user");
+            String redirectURL = "available.jsp";
+            event.createEvent(user.getUser().getUserID(), request.getParameter("eventName"),
+                    request.getParameter("eventDescription"), DateConverter.convertToDate(request.getParameter("eventStart")),
+                    DateConverter.convertToDate(request.getParameter("eventEnd")));
+            session.setAttribute("newEvent", true);
+            session.setAttribute("loginerror", false);
+            session.setAttribute("logout", false);
+            session.setAttribute("register", false);
+            session.setAttribute("passerror", false);
+            response.sendRedirect(redirectURL);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
