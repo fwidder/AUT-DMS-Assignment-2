@@ -2,6 +2,7 @@
     Document   : create
     Created on : 25/04/2018, 10:58:08 AM
     Author     : Glen Osborne and Florian Widder
+    create     : create a new event to allow other users to vote on
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -16,6 +17,7 @@
 
         <jsp:useBean id= "user" scope= "session" class= "beans.UserBean" ></jsp:useBean>
         <jsp:useBean id= "event" scope= "session" class= "beans.EventBean"></jsp:useBean>
+        <!--   REDIRECT IF NOT LOGGED IN          -->
         <%
             String redirectURL = "index.jsp";
             if (!user.isLoggedIn()) {
@@ -27,6 +29,7 @@
         <br>
         <h5 class="center">Create a new event</h5>
         <br>
+        <!--   gather event data for new event          -->
         <div class="centerdiv bordered">
             <form action="createEventProcessing" method="post">
                 <label>Event Name:</label>
@@ -44,6 +47,7 @@
             </form>
         </div>
     </body>
+    <!--   get the values from the date pickers           -->
     <script>
         $("start").on("change", function () {
             this.setAttribute(
