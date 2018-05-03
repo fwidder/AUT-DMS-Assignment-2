@@ -27,6 +27,7 @@
                     <th scope="col">Event ID</th>
                     <th scope="col">Event Name</th>
                     <th scope="col">Creator</th>
+                    <th scope="col">Mail</th>
                     <th scope="col">Description</th>
                     <th scope="col">Start Date</th>
                     <th scope="col">End Date</th>
@@ -39,7 +40,8 @@
                 <tr>
                     <td><%= events[i].getEventID()%></td>
                     <td><%= events[i].getName()%></td>
-                    <td><%= events[i].getCreator()%></td>
+                    <td><%= events[i].getCreator().getName()%></td>
+                    <td><%= events[i].getCreator().getEmail()%></td>
                     <td><%= events[i].getDescription()%></td>
                     <td><%= events[i].getStart()%></td>
                     <td><%= events[i].getEnd()%></td>
