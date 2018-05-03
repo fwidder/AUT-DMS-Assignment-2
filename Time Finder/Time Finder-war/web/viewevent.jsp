@@ -21,7 +21,11 @@
         %>
     </head>
     <body>
-        <table class="table table-hover">
+        <br>
+        <h5 class="center">Review Events</h5>
+        <br>
+        <div>
+            <table class="table table-hover">
             <thead>
                 <tr>
                     <th scope="col">Event ID</th>
@@ -50,6 +54,7 @@
 
                 <%}%>
             </tbody>
-        </table>
-    </body>
+            </table>
+        </div>
+     </body>
 </html>

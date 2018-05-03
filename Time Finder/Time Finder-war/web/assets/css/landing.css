@@ -1,3 +1,6 @@
+body{
+    background-color: #967EEB;
+}
 
 .center{
     text-align: center;
@@ -9,5 +12,5 @@
     padding: 10px;
 }
 .bordered{
-    border: 3px solid green;
+    border: 3px solid blue;
 }
