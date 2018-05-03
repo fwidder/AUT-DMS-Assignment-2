@@ -35,7 +35,7 @@
                 <input type="date" name="eventStart" data-date1="" data-date-format="DD MMMM YYYY" value="2018-04-15">
                 <br>
                 <label>End Date :</label><br>
-                <input type="date" name="eventEnd" data-date2="" data-date-format="DD MMMM YYYY" value="2015-04-15">
+                <input type="date" name="eventEnd" data-date2="" data-date-format="DD MMMM YYYY" value="2018-04-15">
                 <br>
                 <br>
                 <button value="registerEvent" type="submit" class="btn btn-default">Create Event</button>
