@@ -30,6 +30,7 @@
             <% int id = Integer.parseInt(request.getParameter("eventID")); %>
             <% Event e = event.getEventByID(id);
              Date best = e.getBest(); %>
+             <label>The most voted date so far....<label>
              <h1><%= best.toString() %>
             
         </div>

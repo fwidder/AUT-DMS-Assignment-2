@@ -24,9 +24,11 @@
         %> 
     </head>
     <body>
+        <br>
+        <h5 class="center">Create a new event</h5>
+        <br>
         <div class="centerdiv bordered">
             <form action="createEventProcessing" method="post">
-                <h1 class="center">Create New Event</h1>
                 <label>Event Name:</label>
                 <p><input name="eventName"></p>
                 <label>Event Description</label>
