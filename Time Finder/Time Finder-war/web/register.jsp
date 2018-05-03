@@ -36,7 +36,7 @@
         <div class="alert alert-danger" role="alert" style=" display:<%=passerror%>">
             Passwords do not match or Username empty or Email empty!
         </div>
-        <section class="container-fluid">
+        <section class="container-fluid centerdiv bordered">
             <form action="registerProcessing" method="post">
                 <div class="form-group">
                     <label for="username">Username:</label>
